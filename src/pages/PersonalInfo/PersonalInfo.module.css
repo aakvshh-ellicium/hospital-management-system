@@ -1,0 +1,47 @@
+.data{
+    padding: 4em 30vw;
+}
+.inputImage{
+    min-height: 2em;
+    min-width: 1.4em;
+    color: #646464;
+}
+.form{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2em;
+    /* place-items: center; */
+    /* background-color: antiquewhite; */
+    width: 60vw;
+}
+.inputField{
+    outline: none;
+    border: none;
+    background: transparent;
+    width: 100%;
+}
+.form > div{
+    border: 2px solid #bfc2c3;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 15px;
+}
+.header{
+    width: 60vw;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2em;
+}
+.diseaseDescription{
+    padding: 1em;
+}
+.headerRight{
+    display: flex;
+    align-items: center;
+    gap: 1em;
+}
+
+

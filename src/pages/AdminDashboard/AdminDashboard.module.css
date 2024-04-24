@@ -1,0 +1,12 @@
+.wrapper{
+    width: 100%;
+    padding: 4em 6em;
+}
+.gridHeader{
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    place-items: center;
+    gap: 1em;
+    padding: 1em 1.75em;
+    background-color: antiquewhite;
+}
