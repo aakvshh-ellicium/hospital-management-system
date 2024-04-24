@@ -6,13 +6,15 @@ export const readUserInformation = createAsyncThunk('userInformation/readUserInf
     try {
         const token = localStorage.getItem('token');
         const res = await adminAPI.get('/api/PatientData', token);
-
+        
         return res.data;
     } catch (error) {
         console.log('Error fetching users information', error);
         throw error;
     }
 })
+
+// export const updateUserInformation = createAsyncThunk('')
 
 const saveUserInfo = (allUserInfo) => {
     localStorage.setItem('usersInformation', JSON.stringify(allUserInfo));

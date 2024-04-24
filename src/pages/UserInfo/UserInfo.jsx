@@ -15,6 +15,7 @@ import { FaDroplet } from "react-icons/fa6";
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addUserInfo } from '../../app/features/user-info/userInfoSlice';
+import toast from 'react-hot-toast';
 
 const UserInfo = () => {
     const navigate = useNavigate();
@@ -35,6 +36,8 @@ const UserInfo = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
+        
+
         const formData = new FormData(e.currentTarget);
 
         const userDataOne = {};
@@ -52,18 +55,33 @@ const UserInfo = () => {
             diseaseDescription
         }
 
+        const validationErrors = {};
+
+        // const emailPattern = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.(?:[a-zA-Z]{2,}|com|org|net|gov|mil|biz|info|mobi|name|aero|jobs|museum)$/i;
+        const phonePattern = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
+        if (!userDataOne.mobileNumber.trim()) {
+            validationErrors.phone = "Phone number is required";
+            toast.error(validationErrors.phone)
+        } else if (!phonePattern.test(userDataOne.mobileNumber)) {
+            validationErrors.phone = "Phone is not valid";
+            toast.error(validationErrors.phone)
+        }
+
+        if (Object.keys(validationErrors).length === 0){
+            const userData = ({...userDataOne, ...userDataTwo})
+            // let something = Object.keys(userData);
+
+            // console.log(something);
+            console.log(userData)
+            dispatch(addUserInfo(userData))
+
+            console.log(userData)
+            // alert(userData.firstName)
+
+            navigate('/family-info')
+        }
         
-        const userData = ({...userDataOne, ...userDataTwo})
-        // let something = Object.keys(userData);
-
-        // console.log(something);
-        console.log(userData)
-        dispatch(addUserInfo(userData))
-
-        console.log(userData)
-        // alert(userData.firstName)
-
-          navigate('/family-info')
+        
 
     }
   return (
@@ -89,7 +107,7 @@ const UserInfo = () => {
                     </div>
                     <div>
                         <FaPhone className={styles.inputImage} />
-                        <input name="mobileNumber" type="tel" className={styles.inputField} placeholder='Phone' />
+                        <input name="mobileNumber" type="number" className={styles.inputField} placeholder='Phone' />
                     </div>
                     <div>
                         <MdOutlineDateRange className={styles.inputImage} />

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import styles from './SignUp.module.css'
 import SignupIcon from '../../assets/stethoscope.svg'
 import SignupImage from '../../assets/signup-image.svg'
@@ -7,12 +7,23 @@ import { IoKeyOutline } from "react-icons/io5";
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addUser } from '../../app/features/users/usersSlice';
-
+import toast from 'react-hot-toast';
 
 const SignUp = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const users = useSelector((state) => state.users)
+    const users = useSelector((state) => state.users);
+    const [errors, setErrors] = useState({});
+
+    const handleChange = (e) => {
+        const { name } = e.target;
+
+        // Clear error message when user starts typing
+        setErrors({
+            ...errors,
+            [name]: ''
+        });
+    };
 
 
     const handleSubmit = (e) => {
@@ -29,14 +40,44 @@ const SignUp = () => {
             "Email": enteredEmail, 
             "Password": enteredConfirmPassword
         }
- 
-        dispatch(addUser(newUser))
+
+        const validationErrors = {};
+
+        const emailPattern = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.(?:[a-zA-Z]{2,}|com|org|net|gov|mil|biz|info|mobi|name|aero|jobs|museum)$/i;
+        const phonePattern = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
+
+        if (enteredPassword !== enteredConfirmPassword){
+            validationErrors.passwordError = "Both passwords must be same"
+            toast.error("Both passwords must be same")
+        }
+        if (!enteredEmail.trim()) {
+            validationErrors.email = "Email is required";
+            toast.error(validationErrors.email);
+
+        } else if (!emailPattern.test(enteredEmail)) {
+            validationErrors.email = "Email is not valid";
+            toast.error(validationErrors.email);
+
+        }
+        if (!enteredPassword.trim()) {
+            validationErrors.password = "Password is required";
+            toast.error(validationErrors.password);
+
+        } 
+        
+        setErrors(validationErrors);
+
+        if (Object.keys(validationErrors).length === 0) {
+            dispatch(addUser(newUser))
 
         // users.push(JSON.stringify(newUser))
 
-        console.log(newUser);
+            console.log(newUser);
 
-        navigate('/login')
+            navigate('/login')
+        }
+ 
+        
     }
   return (
     <section>

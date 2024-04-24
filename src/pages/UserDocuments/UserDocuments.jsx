@@ -39,7 +39,7 @@ const UserDocuments = () => {
                             <MdFileUpload className={styles.inputImage} />
                             <p>Browse files</p>
                         </div>
-                        <input name='file-1' type="file" onChange={handleChange} />
+                        <input name='aadharCardFront' type="file" onChange={handleChange} />
                     </div>
                 </div>
                 <div className={styles.input}>
@@ -49,7 +49,7 @@ const UserDocuments = () => {
                             <MdFileUpload className={styles.inputImage} />
                             <p>Browse files</p>
                         </div>
-                        <input name='file-2' type="file" onChange={handleChange} />
+                        <input name='aadharCardBack' type="file" onChange={handleChange} />
                     </div>
                 </div>
                 <div className={styles.input}>
@@ -59,7 +59,7 @@ const UserDocuments = () => {
                             <MdFileUpload className={styles.inputImage} />
                             <p>Browse files</p>
                         </div>
-                        <input name='file-3' type="file" onChange={handleChange} />
+                        <input name='medicalInsuranceCardFront' type="file" onChange={handleChange} />
                     </div>
                 </div>
                 <div className={styles.input}>
@@ -69,14 +69,14 @@ const UserDocuments = () => {
                             <MdFileUpload className={styles.inputImage} />
                             <p>Browse files</p>
                         </div>
-                        <input name='file-4' type="file" onChange={handleChange} />
+                        <input name='medicalInsuranceCardBack' type="file" onChange={handleChange} />
                     </div>
                 </div><br /><br />
                 <button type='submit' style={{float: 'center', marginBottom: '8em'}}>Submit</button>
             </form>
 
         </div>
-    </section>
+    </section> 
   )
 }
 

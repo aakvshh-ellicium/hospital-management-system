@@ -13,6 +13,7 @@ import Documents from './pages/Documents/Documents'
 import UserFamilyInfo from './pages/UserFamilyInfo/UserFamilyInfo'
 import UserDocuments from './pages/UserDocuments/UserDocuments'
 import AdminDashboard from './pages/AdminDashboard/AdminDashboard'
+import { Toaster } from 'react-hot-toast'
 
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
         <Route path='/dashboard/admin' element={<AdminDashboard />} />
 
       </Routes>
+      <Toaster />
     </>
   )
 }

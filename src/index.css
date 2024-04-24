@@ -70,6 +70,13 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+
 .option{
   display: flex;
   align-items: center;
@@ -99,6 +106,28 @@ button:focus-visible {
   padding: 1em 1.75em;
   background-color: rgb(224, 224, 224);
   border-bottom: 1px solid #a5a5a5;
+}
+.gridContent2{
+  display: grid;
+  grid-template-columns: repeat(14, 1fr);
+  place-items: center;
+  gap: 1em;
+  padding: 1em 1.75em;
+  font-size: 10px;
+  background-color: rgb(224, 224, 224);
+  border-bottom: 1px solid #a5a5a5;
+}
+.gridContent3{
+  display: grid;
+
+  grid-template-columns: repeat(11, 1fr) ;
+  place-items: center;
+  gap: 1em;
+  padding: 1em 1.75em;
+  font-size: 12px;
+
+
+  background-color: antiquewhite;
 }
 
 textarea{

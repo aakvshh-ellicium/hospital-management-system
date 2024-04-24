@@ -4,6 +4,8 @@ import userInfoReducer from '../app/features/user-info/userInfoSlice';
 import familyInfoReducer from '../app/features/familyInfo/familyInfoSlice'
 import adminReducer from '../app/features/admin/adminSlice'
 import documentReducer, { uploadDocuments } from '../app/features/uploadDocuments/uploadDocumentsSlice'
+import adminPersonalDataReducer from '../app/features/admin/adminPersonalDataSlice'
+import adminFamilyDataReducer from '../app/features/admin/adminFamilyDataSlice'
 
 export default configureStore({
     reducer: {
@@ -11,6 +13,8 @@ export default configureStore({
         userInfo: userInfoReducer,
         familyInfo: familyInfoReducer,
         admin: adminReducer,
-        uploadDocuments: documentReducer
+        uploadDocuments: documentReducer,
+        usersPersonalInfo: adminPersonalDataReducer,
+        usersFamilyInfo: adminFamilyDataReducer
     }
 })

@@ -8,13 +8,22 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { readUserInformation } from '../../app/features/admin/adminSlice';
+import toast from 'react-hot-toast';
 
 
 const Login = () => {
-    const [error, setError] = useState("Error");
     const navigate = useNavigate();
-    // const dispatch = useDispatch();
-    // const {usersData} = useSelector(state => state.admin)
+    const [errors, setErrors] = useState({});
+
+    const handleChange = (e) => {
+        const { name } = e.target;
+
+        // Clear error message when user starts typing
+        setErrors({
+            ...errors,
+            [name]: ''
+        });
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -24,13 +33,36 @@ const Login = () => {
         const enteredEmail = formData.get('email');
         const enteredPassword = formData.get('password');
 
-        console.log(enteredPassword)
         console.log(enteredEmail)
+        console.log(enteredPassword)
 
-        // console.log(usersData)
+        const validationErrors = {};
+
+        const emailPattern = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.(?:[a-zA-Z]{2,}|com|org|net|gov|mil|biz|info|mobi|name|aero|jobs|museum)$/i;
+        const phonePattern = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
+        
+        
+        
+        if (!enteredEmail.trim()) {
+            validationErrors.email = "Email is required";
+            toast.error(validationErrors.email);
+
+        } else if (!emailPattern.test(enteredEmail)) {
+            validationErrors.email = "Email is not valid";
+            toast.error(validationErrors.email);
+
+        }
+        if (!enteredPassword.trim()) {
+            validationErrors.password = "Password is required";
+            toast.error(validationErrors.password);
+
+        } 
+        setErrors(validationErrors);
 
         
-        axios.post('http://127.0.0.1:3000/api/login', {
+        // console.log(usersData)
+        if (Object.keys(validationErrors).length === 0) {
+            axios.post('http://127.0.0.1:3000/api/login', {
             Email: enteredEmail,
             Password: enteredPassword
         }).then((response) => {
@@ -45,6 +77,9 @@ const Login = () => {
         }, (error) => {
             console.log(error);
         });
+        }
+        
+        
         
 
         
@@ -62,6 +97,7 @@ const Login = () => {
 
                 <form className={styles.form} onSubmit={handleSubmit}>
                     <div>
+                        {}
                         <CiMail className={styles.inputImage} />
                         <input name='email' type="email" className={styles.inputField} placeholder='Email Address' />
                     </div>

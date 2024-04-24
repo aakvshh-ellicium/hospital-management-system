@@ -10,3 +10,30 @@
     padding: 1em 1.75em;
     background-color: antiquewhite;
 }
+.grid{
+    /* background-color: aquamarine; */
+    /* padding: 2em; */
+    /* height: 50vh;
+    overflow-y: scroll; */
+}
+.personalInfoGridHeader{
+    display: grid;
+    grid-template-columns: repeat(14, 1fr);
+    place-items: center;
+    gap: 1em;
+    padding: 1em 1.75em;
+  font-size: 10px;
+
+    background-color: antiquewhite;
+}
+.familyInfoGridHeader{
+    display: grid;
+
+    grid-template-columns: repeat(11, 1fr);
+    place-items: center;
+    gap: 1em;
+    padding: 1em 1.75em;
+    font-size: 12px;
+
+    background-color: antiquewhite;
+}

@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import uploadDocumentsAPI from "./uploadDocumentsAPI";
+import { jwtDecode } from "jwt-decode";
 
 
 export const readDocuments = createAsyncThunk('documents/readDocuments', async () => {
@@ -24,6 +25,21 @@ export const uploadDocuments = createAsyncThunk('documents/uploadDocuments', asy
         return res.data;
     } catch(error) {
         console.log(error);
+        throw error;
+    }
+})
+
+export const updateDocuments = createAsyncThunk('documents/updateDocuments', async (file) => {
+    try {
+        const token = localStorage.getItem('token');
+        const decodedToken = jwtDecode(token);
+        console.log("decodedToken",decodedToken)
+        const res = await uploadDocumentsAPI.put(`/uploads/updateDocuments/${decodedToken.ID}`, file, token);
+
+        return res.data;
+
+    } catch(error) {
+        console.log("Error updating user info: ", error);
         throw error;
     }
 })
@@ -57,6 +73,10 @@ const documentSlice = createSlice({
             const data = action.payload;
             state.files.push(data);
             saveFiles(action.payload);
+        })
+        builder.addCase(updateDocuments.fulfilled, (state, action) => {
+            state.files[0] = action.payload;
+            saveFiles(action.payload)
         })
     }
 

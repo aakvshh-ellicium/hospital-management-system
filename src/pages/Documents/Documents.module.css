@@ -37,3 +37,8 @@
     width: 1.5em;
     height: 1.5em;
 }
+.title{
+    display: flex;
+    width: 60vw;
+    justify-content: space-between;
+}
