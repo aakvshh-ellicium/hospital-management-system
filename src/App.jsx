@@ -14,6 +14,7 @@ import UserFamilyInfo from './pages/UserFamilyInfo/UserFamilyInfo'
 import UserDocuments from './pages/UserDocuments/UserDocuments'
 import AdminDashboard from './pages/AdminDashboard/AdminDashboard'
 import { Toaster } from 'react-hot-toast'
+import Protected from './components/Protected/Protected'
 
 
 function App() {
@@ -24,14 +25,14 @@ function App() {
         <Route exact path='/login' element={<Login />} />
         <Route path='/' element={<Navigate to="/login" />} />
         <Route path='/sign-up' element={<SignUp />} />
-        <Route path='/personal-info' element={<UserInfo />} />
-        <Route path='/family-info' element={<UserFamilyInfo />} />
-        <Route path='/documents' element={<UserDocuments />} />
-        <Route path='/dashboard' element={<Dashboard />} />
-        <Route path='/user-personal-info' element={<PersonalInfo />} />
-        <Route path='/user-family-info' element={<FamilyInfo />} />
-        <Route path='/user-documents' element={<Documents />} />
-        <Route path='/dashboard/admin' element={<AdminDashboard />} />
+        <Route path='/personal-info' element={<Protected Component={UserInfo} />} />
+        <Route path='/family-info' element={<Protected Component={UserFamilyInfo} />} />
+        <Route path='/documents' element={<Protected Component={UserDocuments} />} />
+        <Route path='/dashboard' element={<Protected Component={Dashboard} />} />
+        <Route path='/user-personal-info' element={<Protected Component={PersonalInfo} />} />
+        <Route path='/user-family-info' element={<Protected Component={FamilyInfo} />} />
+        <Route path='/user-documents' element={<Protected Component={Documents} />} />
+        <Route path='/dashboard/admin' element={<Protected Component={AdminDashboard} />} />
 
       </Routes>
       <Toaster />

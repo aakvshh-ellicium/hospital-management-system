@@ -75,7 +75,7 @@ const documentSlice = createSlice({
             saveFiles(action.payload);
         })
         builder.addCase(updateDocuments.fulfilled, (state, action) => {
-            state.files[0] = action.payload;
+            state.files = action.payload;
             saveFiles(action.payload)
         })
     }

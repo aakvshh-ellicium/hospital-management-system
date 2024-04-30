@@ -29,6 +29,8 @@
     border: none;
     background: transparent;
     width: 100%;
+    padding: 0.85em 0;
+
 
 }
 #align{
@@ -37,8 +39,8 @@
     align-items: end;
 }
 .inputImage{
-    min-height: 2em;
-    min-width: 1.4em;
+    height: 1.4em;
+    min-width: 1.15em;
     color: #646464;
 }
 

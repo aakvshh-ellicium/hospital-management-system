@@ -10,11 +10,12 @@
     margin-bottom: 2em;
     font-weight: 500;
 }
-.input > div{
+
+.input > label{
     display: flex;
     flex-direction: column;
     align-items: center;
-    
+    cursor: pointer;
 }
 /* style={{display: 'flex', alignItems: 'center', gap: '0.5em', justifyContent: 'center', border: '1px solid blue'} */
 
@@ -24,10 +25,11 @@
     gap: 0.5em;
     justify-content: center;
     border: 1px solid blue;
+    border-radius: 8px;
     width: fit-content;
     padding: 0.5em;
     color: blue;
-    border-radius: 8px;
+    
 }
 .inputImage{
     display: grid;

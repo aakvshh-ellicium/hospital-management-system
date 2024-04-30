@@ -100,7 +100,7 @@ input::-webkit-inner-spin-button {
 }
 .gridContent{ 
   display: grid;
-  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-columns: 1fr 2fr 1fr 1fr;
   place-items: center;
   gap: 1em;
   padding: 1em 1.75em;

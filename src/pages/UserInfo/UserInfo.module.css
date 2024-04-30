@@ -80,5 +80,20 @@
 }
 .dropdown{
     padding: 12px 18px;
+    margin-left: 1em;
 }
-
+.check{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5em;
+    margin-left: 1em;
+}
+#align{
+    display: flex;
+    text-align: left;
+    border: none;
+    padding: 0.5em 1em;
+    align-items: center;
+    justify-content: space-between;
+}

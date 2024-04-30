@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
 import styles from "./AdminDashboard.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { readUserInformation } from "../../app/features/admin/adminSlice";
-import { readAllPersonalData } from "../../app/features/admin/adminPersonalDataSlice";
+import { deleteUserData, readUserInformation } from "../../app/features/admin/adminSlice";
+import { deleteUserPersonalData, readAllPersonalData } from "../../app/features/admin/adminPersonalDataSlice";
 import { readAllFamilyInfo } from "../../app/features/admin/adminFamilyDataSlice";
+import UserDocuments from "../UserDocuments/UserDocuments";
 
 const AdminDashboard = () => {
   const dispatch = useDispatch();
@@ -18,6 +19,13 @@ const AdminDashboard = () => {
     dispatch(readAllFamilyInfo()); 
   }, [dispatch]);
 
+  const handleDelete = (id) => {
+    // e.preventDefault();
+    dispatch(deleteUserData(id))
+    dispatch(readUserInformation());
+    console.log(id)
+  }
+
   console.log(usersPersonalData)
   console.log(usersFamilyData)
   console.log(usersData);
@@ -31,15 +39,19 @@ const AdminDashboard = () => {
           <p>id</p>
           <p>email</p>
           <p>role</p>
+          <p>action</p>
         </div>
         <hr />
 
-        {usersData.data.map(row => {
+        {usersData.data?.map(row => {
           return (
             <div className='gridContent'>
               <p>{row.Id}</p>
               <p>{row.Email}</p>
               <p>{row.roles}</p>
+              <p onClick={() => handleDelete(row.Id)}>Delete</p>
+              {/* <p onClick={handleDelete} id={styles.delete}>Delete</p> */}
+
             </div>
           )
         })}
@@ -67,7 +79,7 @@ const AdminDashboard = () => {
         </div>
         <hr />
         {
-          usersPersonalData.data.map(data => {
+          usersPersonalData.data?.map(data => {
             return (
               <div className='gridContent2'>
                 <p>{data.Id}</p>
@@ -84,6 +96,7 @@ const AdminDashboard = () => {
                 <p>{data.hasBloodPressureConcerns}</p>
                 <p>{data.diseaseType}</p>
                 <p>{data.diseaseDescription}</p>
+
               </div>
             )
           })
@@ -111,7 +124,7 @@ const AdminDashboard = () => {
         <hr />
 
         {
-          usersFamilyData.data.map(data => {
+          usersFamilyData.data?.map(data => {
             return (
               <div className='gridContent3'>
                 <p>{data.Id}</p>

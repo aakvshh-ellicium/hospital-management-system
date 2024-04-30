@@ -15,6 +15,7 @@ import { FaDroplet } from "react-icons/fa6";
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addFamilyInfo } from '../../app/features/familyInfo/familyInfoSlice';
+import toast from 'react-hot-toast';
 
 const UserFamilyInfo = () => {
     const navigate = useNavigate();
@@ -44,13 +45,69 @@ const UserFamilyInfo = () => {
             cardiacPresent: isCardiacPresent,
             bloodPressure: isBloodPressure
         }
- 
-        const familyData = {...familyDataOne, ...familyDataTwo};
-        
-        console.log(familyData);
 
-        dispatch(addFamilyInfo(familyData));
-        navigate('/documents');
+        const validationErrors = {};
+        const namePattern = /^([a-zA-Z ]){2,30}$/;
+        const agePattern = /^(1[8-9]|[2-9][0-9]|90)$/;
+
+        if (!familyDataOne.FathersName.trim()) {
+            validationErrors.FathersName = "Fathers Name is required";
+            toast.error(validationErrors.FathersName)
+        } else if (!namePattern.test(familyDataOne.FathersName)) {
+            validationErrors.FathersName = "Fathers Name is not valid";
+            toast.error(validationErrors.FathersName)
+        }
+
+        if (!familyDataOne.FathersAge.trim()) {
+            validationErrors.FathersAge = "Fathers Age is required";
+            toast.error(validationErrors.FathersAge)
+        } else if (!agePattern.test(familyDataOne.FathersAge)) {
+            validationErrors.FathersAge = "Fathers Age is not valid";
+            toast.error(validationErrors.FathersAge)
+        }
+
+        if (!familyDataOne.FathersCountry.trim()) {
+            validationErrors.FathersCountry = "Fathers Country is required";
+            toast.error(validationErrors.FathersCountry)
+        } else if (!namePattern.test(familyDataOne.FathersCountry)) {
+            validationErrors.FathersCountry = "Fathers Country is not valid";
+            toast.error(validationErrors.FathersCountry)
+        }
+
+        if (!familyDataOne.MothersName.trim()) {
+            validationErrors.MothersName = "Mothers Name is required";
+            toast.error(validationErrors.MothersName)
+        } else if (!namePattern.test(familyDataOne.MothersName)) {
+            validationErrors.MothersName = "Mothers Name is not valid";
+            toast.error(validationErrors.MothersName)
+        }
+
+        if (!familyDataOne.mothersAge.trim()) {
+            validationErrors.mothersAge = "Mothers Age is required";
+            toast.error(validationErrors.mothersAge)
+        } else if (!agePattern.test(familyDataOne.mothersAge)) {
+            validationErrors.mothersAge = "Mothers Age is not valid";
+            toast.error(validationErrors.mothersAge)
+        }
+
+        if (!familyDataOne.motherCountry.trim()) {
+            validationErrors.motherCountry = "Mothers Country is required";
+            toast.error(validationErrors.motherCountry)
+        } else if (!namePattern.test(familyDataOne.motherCountry)) {
+            validationErrors.motherCountry = "Mothers Country is not valid";
+            toast.error(validationErrors.motherCountry)
+        }
+        
+        if (Object.keys(validationErrors).length === 0){
+            const familyData = {...familyDataOne, ...familyDataTwo};
+        
+            console.log(familyData);
+
+            dispatch(addFamilyInfo(familyData));
+            toast.success("Family Info added successfully!")
+            navigate('/documents');
+        }
+        
     }
 
   return (
@@ -67,27 +124,27 @@ const UserFamilyInfo = () => {
                 <form className={styles.form} onSubmit={handleSubmit}>
                     <div>
                         <CgRename className={styles.inputImage} />
-                        <input name='FathersName' type="text" className={styles.inputField} placeholder="Father's Name" />
+                        <input name='FathersName' type="text" className={styles.inputField} placeholder="Father's Name" required />
                     </div>
                     <div>
                         <CgRename className={styles.inputImage} />
-                        <input name='FathersAge' type="number" className={styles.inputField} placeholder="Father's Age" />
+                        <input name='FathersAge' type="number" className={styles.inputField} placeholder="Father's Age" required />
                     </div>
                     <div>
                         <FaRegFlag className={styles.inputImage} />
-                        <input name='FathersCountry' type="text" className={styles.inputField} placeholder="Father's Country" />
+                        <input name='FathersCountry' type="text" className={styles.inputField} placeholder="Father's Country" required />
                     </div>
                     <div>
                         <CgRename className={styles.inputImage} />
-                        <input name='MothersName' type="text" className={styles.inputField} placeholder="Mother's Name" />
+                        <input name='MothersName' type="text" className={styles.inputField} placeholder="Mother's Name" required />
                     </div>
                     <div>
                         <CgRename className={styles.inputImage} />
-                        <input name='mothersAge' type="number" className={styles.inputField} placeholder="Mother's Age" />
+                        <input name='mothersAge' type="number" className={styles.inputField} placeholder="Mother's Age" required />
                     </div>
                     <div>
                         <FaRegFlag className={styles.inputImage} />
-                        <input name='motherCountry' type="text" className={styles.inputField} placeholder="Mother's Country" />
+                        <input name='motherCountry' type="text" className={styles.inputField} placeholder="Mother's Country" required />
                     </div>
                     <div>
                         <GiHospitalCross className={styles.inputImage} />
@@ -108,7 +165,7 @@ const UserFamilyInfo = () => {
                         <p>Have you suffered any cardiac related issues in the past or are suffering currently?</p>
                         <div className={styles.check}>
                             <label htmlFor="">Cardiac-Past</label>
-                            <input value={isCardiacPast} type="checkbox" checked={isCardiacPast === true} className={styles.inputField} onClick={() => setIsCardiacPast(isCardiacPast === true ? false : true)}/>
+                            <input value={isCardiacPast} type="checkbox" checked={isCardiacPast === true} className={styles.inputField} onClick={() => setIsCardiacPast(isCardiacPast === true ? false : true)} />
                         </div>
                         <div className={styles.check}>
                             <label htmlFor="">Cardiac-Present</label>

@@ -4,16 +4,31 @@ import { MdFileUpload } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { uploadDocuments } from '../../app/features/uploadDocuments/uploadDocumentsSlice';
+import toast from 'react-hot-toast';
 
 const UserDocuments = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [file, setFile] = useState();
-    const {files} = useSelector(state => state.uploadDocuments)
+    // const [file, setFile] = useState();
+    // const {files} = useSelector(state => state.uploadDocuments)
 
-    const handleChange = (e) => {
-        setFile(e.target.files[0])
+    const isValidFileUploaded=(file)=>{
+        const validExtensions = ['png','jpeg','jpg', 'pdf']
+        const fileExtension = file.type.split('/')[1]
+        return validExtensions.includes(fileExtension)
     }
+    
+    const handleChange = (e) => {
+        const file = e.target.files[0]
+
+        if(isValidFileUploaded(file)){
+          toast.success("File uploaded successfully")
+        }else{
+            toast.error("Invalid file type")
+        }
+    }
+
+    
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -23,6 +38,7 @@ const UserDocuments = () => {
         console.log(files);
 
         dispatch(uploadDocuments(files));
+        toast.success("Documents uploaded successfully")
         navigate('/dashboard')
 
     }
@@ -34,43 +50,43 @@ const UserDocuments = () => {
             <form onSubmit={handleSubmit}>
                 <div className={styles.input}>
                     <p>Submit your Aadhar Card (front-side) here: </p>
-                    <div>
+                    <label htmlFor={styles.fileUploadOne}>
                         <div className={styles.inputField}>
                             <MdFileUpload className={styles.inputImage} />
                             <p>Browse files</p>
                         </div>
-                        <input name='aadharCardFront' type="file" onChange={handleChange} />
-                    </div>
+                        <input id={styles.fileUploadOne} name='aadharCardFront' type="file" required onChange={handleChange} />
+                    </label>
                 </div>
                 <div className={styles.input}>
                     <p>Submit your Aadhar Card (back-side) here: </p>
-                    <div>
+                    <label htmlFor={styles.fileUploadTwo}>
                         <div className={styles.inputField}>
                             <MdFileUpload className={styles.inputImage} />
                             <p>Browse files</p>
                         </div>
-                        <input name='aadharCardBack' type="file" onChange={handleChange} />
-                    </div>
+                        <input id={styles.fileUploadTwo} name='aadharCardBack' type="file" required onChange={handleChange} />
+                    </label>
                 </div>
                 <div className={styles.input}>
                     <p>Submit medical insurance card (front-side) here: </p>
-                    <div>
+                    <label htmlFor={styles.fileUploadThree}>
                         <div className={styles.inputField}>
                             <MdFileUpload className={styles.inputImage} />
                             <p>Browse files</p>
                         </div>
-                        <input name='medicalInsuranceCardFront' type="file" onChange={handleChange} />
-                    </div>
+                        <input id={styles.fileUploadThree} name='medicalInsuranceCardFront' type="file" required onChange={handleChange} />
+                    </label>
                 </div>
                 <div className={styles.input}>
                     <p>Submit medical insurance card (back-side) here: </p>
-                    <div>
+                    <label htmlFor={styles.fileUploadFour}>
                         <div className={styles.inputField}>
                             <MdFileUpload className={styles.inputImage} />
                             <p>Browse files</p>
                         </div>
-                        <input name='medicalInsuranceCardBack' type="file" onChange={handleChange} />
-                    </div>
+                        <input id={styles.fileUploadFour} name='medicalInsuranceCardBack' type="file" required onChange={handleChange} />
+                    </label>
                 </div><br /><br />
                 <button type='submit' style={{float: 'center', marginBottom: '8em'}}>Submit</button>
             </form>
@@ -80,4 +96,4 @@ const UserDocuments = () => {
   )
 }
 
-export default UserDocuments
+export default UserDocuments;

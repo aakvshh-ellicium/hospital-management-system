@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import styles from './Login.module.css'
 import LoginIcon from '../../assets/stethoscope.svg'
 import LoginImage from '../../assets/login-image.svg'
@@ -9,11 +9,16 @@ import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { readUserInformation } from '../../app/features/admin/adminSlice';
 import toast from 'react-hot-toast';
+import { loginUser } from '../../app/features/login/loginUserSlice';
 
 
 const Login = () => {
+    const dispatch = useDispatch();
     const navigate = useNavigate();
+    const {user} = useSelector(state => state.user);
+
     const [errors, setErrors] = useState({});
+    // const memoizedUser = useMemo(() => user, [user]);
 
     const handleChange = (e) => {
         const { name } = e.target;
@@ -25,7 +30,11 @@ const Login = () => {
         });
     };
 
-    const handleSubmit = (e) => {
+    const setLocalStorage = (token) => {
+        localStorage.setItem('token', token)
+    }  
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         const formData = new FormData(e.currentTarget);
@@ -62,28 +71,40 @@ const Login = () => {
         
         // console.log(usersData)
         if (Object.keys(validationErrors).length === 0) {
-            axios.post('http://127.0.0.1:3000/api/login', {
-            Email: enteredEmail,
-            Password: enteredPassword
-        }).then((response) => {
-            console.log(response);
-            const {token} = response.data;
-            localStorage.setItem('token', token);
-            if (enteredEmail === 'admin@gmail.com' && enteredPassword === '1234'){
-                navigate('/dashboard/admin')
-            } else {
-                navigate('/personal-info');
-            }
-        }, (error) => {
-            console.log(error);
-        });
-        }
-        
-        
-        
+            const action = await dispatch(loginUser({
+                Email: enteredEmail,
+                Password: enteredPassword
+            }))
+            const {payload} = action;
+            if (payload && payload.token){
+                setLocalStorage(payload.token);
+                toast.success('Login successful')
+                if (enteredEmail === 'admin@gmail.com' && enteredPassword === '1234'){
+                    navigate('/dashboard/admin')
+                } else {
+                    navigate('/personal-info')
 
-        
+                }
+            }
+
+        }
+
     }
+
+
+    // useEffect(() => {
+    //     if (memoizedUser.token){
+    //         setLocalStorage(memoizedUser.token)
+
+    //         if (memoizedUser.email === 'admin@gmail.com' && memoizedUser.password === '1234'){
+    //             navigate('/dashboard/admin')
+    //         }
+    //     } else {
+    //         navigate('/login');
+    //     }
+
+    // }, [memoizedUser, navigate])
+
 
 
   return (
@@ -97,7 +118,6 @@ const Login = () => {
 
                 <form className={styles.form} onSubmit={handleSubmit}>
                     <div>
-                        {}
                         <CiMail className={styles.inputImage} />
                         <input name='email' type="email" className={styles.inputField} placeholder='Email Address' />
                     </div>

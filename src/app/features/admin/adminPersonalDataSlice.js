@@ -19,7 +19,7 @@ export const updateUserPersonalData = createAsyncThunk('data/updatePersonalData'
     try {
         const token = localStorage.getItem('token');
         const decodedToken = jwtDecode(token)
-        const res = await adminDataAPI.post(`/patients/${token}`, personalData, token);
+        const res = await adminDataAPI.put(`/patients/${decodedToken.ID}`, personalData, token);
 
         return res.data
     } catch (error) {
@@ -27,6 +27,21 @@ export const updateUserPersonalData = createAsyncThunk('data/updatePersonalData'
         throw error;
 
     }
+})
+
+export const deleteUserPersonalData = createAsyncThunk('data/deletePersonalData', async () => {
+    try {
+        const token = localStorage.getitem('token');
+        const decodedToken = jwtDecode(token);
+        const res = await adminDataAPI.delete(`/patients/${decodedToken.ID}`, token);
+
+        return res.data
+    } catch (error) {
+        console.log(error)
+        throw error;
+    }
+    
+
 })
 
 const saveUserPersonalInfo = (usersPersonalInfo) => {
@@ -56,6 +71,10 @@ const adminPersonalDataSlice = createSlice({
         builder.addCase(updateUserPersonalData.fulfilled, (state, action) => {
             state.usersPersonalData[0] = action.payload;
             saveUserPersonalInfo(action.payload);
+        })
+        builder.addCase(deleteUserPersonalData.fulfilled, (state, action) => {
+            state.usersPersonalData = state.usersPersonalData.filter(data => data.Id !== action.payload);
+            saveUserPersonalInfo(state.usersPersonalData)
         })
     }
 })

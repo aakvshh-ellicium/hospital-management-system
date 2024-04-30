@@ -6,10 +6,12 @@ import adminReducer from '../app/features/admin/adminSlice'
 import documentReducer, { uploadDocuments } from '../app/features/uploadDocuments/uploadDocumentsSlice'
 import adminPersonalDataReducer from '../app/features/admin/adminPersonalDataSlice'
 import adminFamilyDataReducer from '../app/features/admin/adminFamilyDataSlice'
+import loginUserReducer from '../app/features/login/loginUserSlice'
 
 export default configureStore({
     reducer: {
         users: usersReducer,
+        user: loginUserReducer,
         userInfo: userInfoReducer,
         familyInfo: familyInfoReducer,
         admin: adminReducer,

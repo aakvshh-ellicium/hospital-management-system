@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { readUserInfo } from "../../app/features/user-info/userInfoSlice";
 import { readFamilyInfo } from "../../app/features/familyInfo/familyInfoSlice";
 import { readDocuments } from "../../app/features/uploadDocuments/uploadDocumentsSlice";
+import MainLayout from "../../components/Layout/MainLayout";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -32,15 +33,13 @@ const Dashboard = () => {
   // console.log(files)
   return (
     <>
-      <div className={styles.sidebar}>
-        <Sidebar />
-      </div>
+      <MainLayout>
 
-      <div className={styles.data}>
+      
         <h2>Hello {userInfoData.data?.map((e) => e.firstName)}</h2>
 
-        <div></div>
-      </div>
+        
+      </MainLayout>
     </>
   );
 };

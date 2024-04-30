@@ -5,39 +5,68 @@ import { MdFileUpload } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { readDocuments, updateDocuments } from '../../app/features/uploadDocuments/uploadDocumentsSlice';
+import MainLayout from '../../components/Layout/MainLayout';
+import toast from 'react-hot-toast';
 
 const Documents = () => {
     const dispatch = useDispatch();
     const {files} = useSelector(state => state.uploadDocuments);
     const [isEditable, setIsEditable] = useState(false);
-    const [file, setFile] = useState(null);
-
+    // const [file, setFile] = useState(null);
+    // const [invalidFiles, setInvalidFiles] = useState({});
     const handleClick = () => {
         setIsEditable(true);
     }
+    
+    const invalidFiles = {}
+
+    const isValidFileUploaded=(file)=>{
+        const validExtensions = ['png','jpeg','jpg', 'pdf']
+        const fileExtension = file.type.split('/')[1]
+        return validExtensions.includes(fileExtension)
+    }
     const handleChange = (e) => {
-        setFile(e.target.files[0]);
+        const file = e.target.files[0];
+
+
+        if(isValidFileUploaded(file)){
+          toast.success("File uploaded successfully");
+          delete invalidFiles.validity;
+        console.log(invalidFiles)
+        }else{
+            toast.error("Invalid file type")
+            invalidFiles.validity = 'No';
+            console.log(invalidFiles)
+        }
     }
 
     const handleDocSubmit = (e) => {
         e.preventDefault();
 
         const formData = new FormData(e.currentTarget);
-        const newFiles = Object.fromEntries(formData);
-        console.log(newFiles);
+        // const validationErrors = {...invalidFiles}
 
-        dispatch(updateDocuments(newFiles));
+        console.log(invalidFiles)
 
-        setIsEditable(false);
+        if (Object.keys(invalidFiles).length !== 0) {
+            toast.error("Files can be only of png/jpg/jpeg/pdf format")
+        }
+        else if (Object.keys(invalidFiles).length === 0){
+            const newFiles = Object.fromEntries(formData);
+            console.log(newFiles);
+
+            dispatch(updateDocuments(newFiles));
+            toast.success("Documents updated successfully")
+            setIsEditable(false);
+        } 
+        
     }
 
     console.log(files)
   return (
     <>
-        <div className={styles.sidebar}>
-            <Sidebar />
-        </div>
-        <div className={styles.data}>
+        <MainLayout>
+        
             <div className={styles.title}>
                 <h2>Documents</h2>
                 <div className={styles.headerRight}>
@@ -54,7 +83,7 @@ const Documents = () => {
                         <MdFileUpload className={styles.inputImage} />
                         <p>Browse files</p>
                     </div>
-                    <input name='aadharCardFront' onChange={handleChange} disabled={!isEditable} type="file" />
+                    <input name='aadharCardFront' onChange={handleChange} disabled={!isEditable} type="file" required />
                 </div>
             </div>
             <div className={styles.input}>
@@ -64,7 +93,7 @@ const Documents = () => {
                         <MdFileUpload className={styles.inputImage} />
                         <p>Browse files</p>
                     </div>
-                    <input name='aadharCardBack' onChange={handleChange} disabled={!isEditable} type="file" />
+                    <input name='aadharCardBack' onChange={handleChange} disabled={!isEditable} type="file" required />
                 </div>
             </div>
             <div className={styles.input}>
@@ -74,7 +103,7 @@ const Documents = () => {
                         <MdFileUpload className={styles.inputImage} />
                         <p>Browse files</p>
                     </div>
-                    <input name='medicalInsuranceCardFront' onChange={handleChange} disabled={!isEditable}type="file" />
+                    <input name='medicalInsuranceCardFront' onChange={handleChange} disabled={!isEditable}type="file" required />
                 </div>
             </div>
             <div className={styles.input}>
@@ -84,13 +113,13 @@ const Documents = () => {
                         <MdFileUpload className={styles.inputImage} />
                         <p>Browse files</p>
                     </div>
-                    <input name='medicalInsuranceCardBack' onChange={handleChange} disabled={!isEditable} type="file" />
+                    <input name='medicalInsuranceCardBack' onChange={handleChange} disabled={!isEditable} type="file" required />
                 </div>
             </div><br /><br />
         </form>
 
-
-        </div>
+        </MainLayout>
+        
     </>
   )
 }

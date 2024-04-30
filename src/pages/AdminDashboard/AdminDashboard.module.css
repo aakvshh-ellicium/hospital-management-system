@@ -4,18 +4,13 @@
 }
 .gridHeader{
     display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-columns: 1fr 2fr 1fr 1fr;
     place-items: center;
     gap: 1em;
     padding: 1em 1.75em;
     background-color: antiquewhite;
 }
-.grid{
-    /* background-color: aquamarine; */
-    /* padding: 2em; */
-    /* height: 50vh;
-    overflow-y: scroll; */
-}
+
 .personalInfoGridHeader{
     display: grid;
     grid-template-columns: repeat(14, 1fr);
@@ -36,4 +31,14 @@
     font-size: 12px;
 
     background-color: antiquewhite;
+}
+
+
+#delete{
+    color: crimson;
+    cursor: pointer;
+}
+#delete:hover{
+    text-decoration: underline;
+    font-weight: 500;
 }
