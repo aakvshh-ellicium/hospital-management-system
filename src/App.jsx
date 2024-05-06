@@ -15,6 +15,7 @@ import UserDocuments from './pages/UserDocuments/UserDocuments'
 import AdminDashboard from './pages/AdminDashboard/AdminDashboard'
 import { Toaster } from 'react-hot-toast'
 import Protected from './components/Protected/Protected'
+import Modal from './components/AdminDashboard/Modal'
 
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
         <Route path='/user-personal-info' element={<Protected Component={PersonalInfo} />} />
         <Route path='/user-family-info' element={<Protected Component={FamilyInfo} />} />
         <Route path='/user-documents' element={<Protected Component={Documents} />} />
+        <Route path='/dashboard/admin/modal' element={<Protected Component={Modal} />} />
         <Route path='/dashboard/admin' element={<Protected Component={AdminDashboard} />} />
 
       </Routes>

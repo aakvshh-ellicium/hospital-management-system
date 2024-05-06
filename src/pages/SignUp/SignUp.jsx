@@ -2,29 +2,38 @@ import React, {useState} from 'react'
 import styles from './SignUp.module.css'
 import SignupIcon from '../../assets/stethoscope.svg'
 import SignupImage from '../../assets/signup-image.svg'
-import { CiMail } from "react-icons/ci";
-import { IoKeyOutline } from "react-icons/io5";
+
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addUser } from '../../app/features/users/usersSlice';
 import toast from 'react-hot-toast';
 
+import InputField from '../../components/SignUp/InputField';
+
 const SignUp = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const users = useSelector((state) => state.users);
     const [errors, setErrors] = useState({});
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-    const handleChange = (e) => {
-        const { name } = e.target;
+    
 
-        // Clear error message when user starts typing
-        setErrors({
-            ...errors,
-            [name]: ''
-        });
-    };
+    const handleClick = () => {
+        setShowPassword(!showPassword);
 
+        // showPassword ? setType('text') : setType('password');
+        console.log(showPassword);
+    }
+
+    const handleClickConfirm = () => {
+        setShowConfirmPassword(!showConfirmPassword);
+
+        // showPassword ? setType('text') : setType('password');
+        // console.log(showPassword);
+    }
+
+    
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -73,7 +82,7 @@ const SignUp = () => {
         // users.push(JSON.stringify(newUser))
 
             console.log(newUser);
-
+            toast.success("User registered successfully")
             navigate('/login')
         }
  
@@ -89,18 +98,7 @@ const SignUp = () => {
                 </div>
 
                 <form className={styles.form} onSubmit={handleSubmit}>
-                    <div>
-                        <CiMail className={styles.inputImage} />
-                        <input name='email' type="email" className={styles.inputField} placeholder='Email Address' />
-                    </div>
-                    <div>
-                        <IoKeyOutline className={styles.inputImage} />
-                        <input name='password' type="password" className={styles.inputField} placeholder='Password' />
-                    </div>
-                    <div>
-                        <IoKeyOutline className={styles.inputImage} />
-                        <input name='confirm-password' type="password" className={styles.inputField} placeholder='Confirm-Password' />
-                    </div>
+                    <InputField />
                     <br />
                     <button className={styles.signupBtn} type='submit'>Sign-up</button>
                 </form>

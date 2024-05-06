@@ -2,6 +2,35 @@
     width: 100%;
     padding: 4em 6em;
 }
+.radio{
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+}
+.filters{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+.dropdown .option{
+    margin: 8px 12px;
+    
+}
+.dropdown{
+    padding: 8px 8px;
+}
+.filter{
+    display: flex;
+    align-items: center;
+    gap: 0.75em;
+}
+.header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* background-color: antiquewhite; */
+}
 .gridHeader{
     display: grid;
     grid-template-columns: 1fr 2fr 1fr 1fr;
@@ -32,7 +61,20 @@
 
     background-color: antiquewhite;
 }
-
+.modal{
+    color: #496CFF;
+    font-weight: 600;
+    cursor: pointer;
+    /* text-decoration: underline; */
+}
+.searchInput{
+    padding: 12px 18px;
+    border-radius: 4px;
+    /* border: none; */
+}
+.pagination{
+    text-align: center;
+}
 
 #delete{
     color: crimson;

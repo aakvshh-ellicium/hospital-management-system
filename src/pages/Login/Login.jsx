@@ -17,18 +17,8 @@ const Login = () => {
     const navigate = useNavigate();
     const {user} = useSelector(state => state.user);
 
-    const [errors, setErrors] = useState({});
+    // const [errors, setErrors] = useState({});
     // const memoizedUser = useMemo(() => user, [user]);
-
-    const handleChange = (e) => {
-        const { name } = e.target;
-
-        // Clear error message when user starts typing
-        setErrors({
-            ...errors,
-            [name]: ''
-        });
-    };
 
     const setLocalStorage = (token) => {
         localStorage.setItem('token', token)
@@ -66,7 +56,7 @@ const Login = () => {
             toast.error(validationErrors.password);
 
         } 
-        setErrors(validationErrors);
+        // setErrors(validationErrors);
 
         
         // console.log(usersData)

@@ -10,5 +10,11 @@
     width: 2em;
     height: 2em;
 }
+.options{
+    height: calc(100vh - 7.25em);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
 
 

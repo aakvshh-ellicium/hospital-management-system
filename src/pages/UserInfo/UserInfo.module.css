@@ -58,17 +58,7 @@
     /* width: fit-content; */
     padding: 4px 15px;
 }
-.inputImage{
-    min-height: 2em;
-    min-width: 1.4em;
-    color: #646464;
-}
-.inputField{
-    outline: none;
-    border: none;
-    background: transparent;
-    width: 100%;
-}
+
 .registerBtn{
     background-color: #419b5b;
     color: #fff;

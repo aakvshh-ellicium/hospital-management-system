@@ -1,149 +1,215 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./AdminDashboard.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteUserData, readUserInformation } from "../../app/features/admin/adminSlice";
-import { deleteUserPersonalData, readAllPersonalData } from "../../app/features/admin/adminPersonalDataSlice";
+import {
+  deleteUserData,
+  readUserInformation,
+} from "../../app/features/admin/adminSlice";
+import {
+  deleteUserPersonalData,
+  readAllPersonalData,
+} from "../../app/features/admin/adminPersonalDataSlice";
 import { readAllFamilyInfo } from "../../app/features/admin/adminFamilyDataSlice";
 import UserDocuments from "../UserDocuments/UserDocuments";
+import { Link, useNavigate } from "react-router-dom";
+import Modal from "../../components/AdminDashboard/Modal";
+import Pagination from "../../components/AdminDashboard/Pagination";
 
 const AdminDashboard = () => {
   const dispatch = useDispatch();
   const { usersData } = useSelector((state) => state.admin);
-  const {usersPersonalData} = useSelector(state => state.usersPersonalInfo);
-  const {usersFamilyData} = useSelector(state => state.usersFamilyInfo)
-
+  const { usersPersonalData } = useSelector((state) => state.usersPersonalInfo);
+  const { usersFamilyData } = useSelector((state) => state.usersFamilyInfo);
+  const [searchVal, setSearchVal] = useState("");
+  const [data, setData] = useState(usersData.data);
+  const [sortType, setSortType] = useState("ascending");
+  const [selectedOption, setSelectedOption] = useState('serial-number')
+  const [viewId, setViewId] = useState(null);
+  const [currentPage, setcurrentPage] = useState(1);
+  const [postsPerPage, setpostsPerPage] = useState(5);
 
   useEffect(() => {
     dispatch(readUserInformation());
-    dispatch(readAllPersonalData());
-    dispatch(readAllFamilyInfo()); 
-  }, [dispatch]);
+  }, [dispatch]); 
 
-  const handleDelete = (id) => {
-    // e.preventDefault();
-    dispatch(deleteUserData(id))
-    dispatch(readUserInformation());
-    console.log(id)
+  // const handleDelete = (id) => {
+  //   // e.preventDefault();
+  //   dispatch(deleteUserData(id));
+  //   dispatch(readUserInformation());
+  //   // console.log(id)
+  // };
+
+  useEffect(() => {
+    const filteredUsers = usersData.data?.filter((user) =>
+      user.Email.includes(searchVal)
+    );
+
+    setData(filteredUsers);
+  }, [searchVal]);
+
+  const handleClick = (e) => {
+    setSortType(e.target.value);
+  };
+
+  const handleSortChange = (e) => {
+    setSelectedOption(e.target.value)
+    
+  };
+
+  const handlePostsChange = (e) => {
+    setpostsPerPage(e.target.value);
   }
 
-  console.log(usersPersonalData)
-  console.log(usersFamilyData)
-  console.log(usersData);
+  const handleModalClick = (row) => {
+    setViewId(row.Id);
+
+  }
+
+
+  useEffect(() => {
+    console.log(sortType)
+    console.log(selectedOption)
+
+    if (selectedOption === "serial-number") {
+      const sortById =
+        sortType === "ascending"
+          ? [...data].sort((a, b) => (a.Id > b.Id ? 1 : -1))
+          : [...data].sort((a, b) => (b.Id > a.Id ? 1 : -1));
+        // console.log(sortById)
+      setData(sortById);
+    }
+    if (selectedOption === "email") {
+      const sortByEmail =
+        sortType === "ascending"
+          ? [...data].sort((a, b) => (a.Email > b.Email ? 1 : -1))
+          : [...data].sort((a, b) => (b.Email > a.Email ? 1 : -1));
+      setData(sortByEmail);
+    } 
+    if (selectedOption === "role") {
+      const sortByRoles =
+        sortType === "ascending"
+          ? [...data].sort((a, b) => (a.roles > b.roles ? 1 : -1))
+          : [...data].sort((a, b) => (b.roles > a.roles ? 1 : -1));
+        // console.log(sortByRoles)
+      setData(sortByRoles);
+    }
+
+  }, [sortType, selectedOption, viewId])
+
+  const lastUserIndex = currentPage * postsPerPage;
+  const firstUserIndex = lastUserIndex - postsPerPage;
+
+  const currentPosts = data.slice(firstUserIndex, lastUserIndex);
+
   return (
     <div className={styles.wrapper}>
-      <h2>Admin Dashboard</h2><br /><br />
-
-      <h2>Users:</h2> <br /><br />
+      <div className={styles.header}>
+        <h2>Admin Dashboard</h2>
+        <input
+          type="text"
+          onChange={(e) => setSearchVal(e.target.value)}
+          value={searchVal}
+          placeholder="Search by email"
+          className={styles.searchInput}
+        />
+      </div>
+      <br />
+      <div className={styles.filters}>
+        <p>Showing {postsPerPage} of {data.length} records</p>
+        <div className={styles.filter}>
+          <label htmlFor="">Sort by</label>
+          <select
+            name=""
+            defaultValue='serial-number'
+            id=""
+            className={styles.dropdown}
+            onChange={handleSortChange}
+          >
+            <option className={styles.option} value={'serial-number'} >
+              Serial number
+            </option>
+            <option className={styles.option} value={'email'} >
+              Email
+            </option>
+            <option className={styles.option} value={'role'} >
+              Role
+            </option>
+          </select>
+        </div>
+        <div className={styles.filter}>
+          <div className={styles.radio}>
+            <label htmlFor="">Ascending</label>
+            <input
+              type="radio"
+              name="sort"
+              id=""
+              defaultChecked={sortType ==="ascending"}
+              value={"ascending"}
+              onClick={handleClick}
+            />
+          </div>
+          <div className={styles.radio}>
+            <label htmlFor="">Descending</label>
+            <input
+              type="radio"
+              name="sort"
+              id=""
+              defaultChecked={sortType === 'descending'}
+              value={"descending"}
+              onClick={handleClick}
+            />
+          </div>
+        </div>
+        <div className={styles.filter}>
+          <label htmlFor="">Number of records</label>
+          <select name="" id="" className={styles.dropdown} onChange={handlePostsChange}>
+            <option className={styles.option} value={5}>
+              5
+            </option>
+            <option className={styles.option} value={10}>
+              10
+            </option>
+            <option className={styles.option} value={15}>
+              15
+            </option>
+            <option className={styles.option} value={20}>
+              20
+            </option>
+            <option className={styles.option} value={30}>
+              30
+            </option>
+          </select>
+        </div>
+      </div>
+      <br />
+      {/* <h2>Users:</h2> <br /><br /> */}
       <div className={styles.grid}>
         <div className={styles.gridHeader}>
-          <p>id</p>
-          <p>email</p>
-          <p>role</p>
-          <p>action</p>
+          <p>Sr.no</p>
+          <p>Email</p>
+          <p>Role</p>
+          <p>Profile</p>
         </div>
         <hr />
 
-        {usersData.data?.map(row => {
-          return (
-            <div className='gridContent'>
-              <p>{row.Id}</p>
-              <p>{row.Email}</p>
-              <p>{row.roles}</p>
-              <p onClick={() => handleDelete(row.Id)}>Delete</p>
-              {/* <p onClick={handleDelete} id={styles.delete}>Delete</p> */}
-
-            </div>
-          )
-        })}
-        
-      </div><br /><br />
-
-      <h2>Personal Data</h2><br /><br />
-      <div className={styles.personalInfoGrid}>
-        <div className={styles.personalInfoGridHeader}>
-          <p>id</p>
-          <p>firstname</p>
-          <p>lastname</p>
-          <p>mobile-number</p>
-          <p>date-of-birth</p>
-          <p>age</p>
-          <p>weight</p>
-          <p>height</p>
-          <p>country-of-origin</p>
-          <p>diabetic</p>
-          <p>cardiac-issues</p>
-          <p>blood-pressure</p>
-          <p>disease-type</p>
-          <p>disease-description</p>
-
-        </div>
-        <hr />
-        {
-          usersPersonalData.data?.map(data => {
+        {data.length > 0 &&
+          currentPosts?.map((row) => {
             return (
-              <div className='gridContent2'>
-                <p>{data.Id}</p>
-                <p>{data.firstName}</p>
-                <p>{data.lastName}</p>
-                <p>{data.mobileNumber}</p>
-                <p>{data.dateOfBirth}</p>
-                <p>{data.age}</p>
-                <p>{data.weight}</p>
-                <p>{data.height}</p>
-                <p>{data.countryOfOrigin}</p>
-                <p>{data.isDiabetic}</p>
-                <p>{data.hasCardiacIssues}</p>
-                <p>{data.hasBloodPressureConcerns}</p>
-                <p>{data.diseaseType}</p>
-                <p>{data.diseaseDescription}</p>
-
-              </div>
-            )
-          })
-        }
-
-      </div><br /><br />
-
-        <h2>Family Data</h2><br /><br />
-      <div className={styles.familyInfoGrid}>
-        <div className={styles.familyInfoGridHeader}>
-            <p>id</p>
-            <p>fathers-name</p>
-            <p>fathers-age</p>
-            <p>fathers-country</p>
-            <p>mothers-name</p>
-            <p>mothers-age</p>
-            <p>mothers-country</p>
-            <p>diabetic</p>
-            {/* <p>pre-diabetic</p> */}
-            <p>cardiac-past</p>
-            <p>cardiac-present</p>
-            <p>bp</p>
-            {/* <p></p> */}
-        </div>
-        <hr />
-
-        {
-          usersFamilyData.data?.map(data => {
-            return (
-              <div className='gridContent3'>
-                <p>{data.Id}</p>
-                <p>{data.FathersName}</p>
-                <p>{data.FathersAge}</p>
-                <p>{data.FathersCountry}</p>
-                <p>{data.MothersName}</p>
-                <p>{data.mothersAge}</p>
-                <p>{data.motherCountry}</p>
-                <p>{data.diabetic}</p>
-                {/* <p>{data.preDiabetic}</p> */}
-                <p>{data.CardiacPast}</p>
-                <p>{data.cardiacPresent}</p>
-                <p>{data.bloodPressure}</p>
+              <div key={row.Id} className="gridContent">
+                <p>{row.Id}</p>
+                <p>{row.Email}</p>
+                <p>{row.roles}</p>
+                <p onClick={() => handleModalClick(row)} className={styles.modal}>View</p>
+                
                 
               </div>
-            )
-          })
-        }
+            );
+          })}
+          {viewId && <Modal id={viewId} data={usersFamilyData.data} onClose={() => setViewId(null)} />}
+      </div>
+      <br />
+      <div className={styles.pagination}>
+      <Pagination totalPosts={data.length} postsPerPage={postsPerPage} setCurrentPage={setcurrentPage} />
       </div>
     </div>
   );

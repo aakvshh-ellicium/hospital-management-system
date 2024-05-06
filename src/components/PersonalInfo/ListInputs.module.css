@@ -1,0 +1,11 @@
+.inputImage{
+    min-height: 2em;
+    min-width: 1.4em;
+    color: #646464;
+}
+.inputField{
+    outline: none;
+    border: none;
+    background: transparent;
+    width: 100%;
+}

@@ -1,0 +1,23 @@
+.inputPassword{
+    display: flex;
+    align-items: center;
+    width: calc(100% - 2.3vw);
+    /* justify-content: center; */
+    gap: 8px;
+}
+.action{
+    color: #419b5b;
+    font-weight: 700;
+}
+.inputImage{
+    min-height: 2em;
+    width: 1.4em;
+    color: #646464;
+}
+.inputField{
+    outline: none;
+    border: none;
+    background: transparent;
+    width: 100%;
+
+}

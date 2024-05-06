@@ -12,6 +12,18 @@ export const addUser = createAsyncThunk('users/addUser', async (newUser) => {
     return res.data;
 })
 
+export const deleteUser = createAsyncThunk('users/deleteUser', async () => {
+    try{
+        const token = localStorage.getItem('token');
+        const res = await usersAPI.delete('/api/PatientData', token)
+
+        return res.data;
+    } catch(error) {
+        console.log("Error deleting user: ", error)
+        throw error;
+    }
+})
+
 const usersSlice = createSlice({
     name: 'users',
     initialState: {
@@ -21,6 +33,9 @@ const usersSlice = createSlice({
     extraReducers: (builder) =>  {
         builder.addCase(addUser.fulfilled, (state, action) => {
             state.data = action.payload
+        })
+        builder.addCase(deleteUser.fulfilled, (state, action) => {
+            state.data = state.data.filter(data => data.Id !== action.payload);
         })
         
     }
